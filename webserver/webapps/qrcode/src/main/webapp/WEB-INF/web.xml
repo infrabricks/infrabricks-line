@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns="http://java.sun.com/xml/ns/javaee"
+		xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+		xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+		id="WebApp_ID" version="2.5">
+
+  <display-name>QR_Code_Servlet</display-name>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
+	<servlet>
+		<servlet-name>QRCodeServlet</servlet-name>
+		<servlet-class>io.infrabricks.qrcodes.QRCodeServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>VCardServlet</servlet-name>
+		<servlet-class>io.infrabricks.qrcodes.VCardServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>QRCodeServlet</servlet-name>
+		<url-pattern>/qr</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>VCardServlet</servlet-name>
+		<url-pattern>/vcard</url-pattern>
+	</servlet-mapping>
+</web-app>

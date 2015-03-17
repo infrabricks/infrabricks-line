@@ -1,0 +1,78 @@
+body, input{
+	font-family: Calibri, Arial;
+	margin: 0px;
+	padding: 0px;
+}
+a {
+	color: #0254EB
+}
+a:visited {
+	color: #0254EB
+}
+#header h2 {
+	color: white;
+	background-color: #ED8108;
+	margin:0px;
+	padding: 5px;
+	height: 40px;
+	padding: 15px;
+}
+
+html, body, #container { height: 100%; }
+body > #container { height: auto; min-height: 100%; }
+
+#footer {
+	font-size: 12px;
+	clear: both;
+	position: relative;
+	z-index: 10;
+	height: 3em;
+	margin-top: -3em;
+	text-align:center;
+}
+#content { padding-bottom: 3em; padding: 10px;}
+
+
+input {
+	font-size: 15px;
+}
+
+.style1 {
+	border: 3px solid #ffaa00;
+	font-size: 20px;
+}
+
+.style2 {
+	border: 2px solid #aaff77;
+	font-size: 18px;
+}
+
+form {
+    width: 80%;
+    margin: 0 auto;
+}
+
+label, input {
+    /* in order to define widths */
+    display: inline-block;
+}
+
+label {
+    width: 30%;
+    /* positions the label text beside the input */
+    text-align: right;
+}
+
+label + input {
+    width: 30%;
+    /* large margin-right to force the next element to the new-line
+       and margin-left to create a gutter between the label and input */
+    margin: 0 30% 0 4%;
+}
+
+/* only the submit button is matched by this selector,
+   but to be sure you could use an id or class for that button */
+input + input {
+    float: right;
+}
+​
