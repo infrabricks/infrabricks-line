@@ -1,0 +1,25 @@
+FROM debian:8
+
+RUN \
+  apt-get update \
+  && apt-get install -yq apache2 apache2-mpm-worker wget gcc tar make apache2-threaded-dev \
+  && apt-get clean autoclean \
+  && apt-get autoremove -y \
+  && rm -rf /var/lib/{apt,dpkg,cache,log}/
+
+ENV JK_VERSION=1.2.40
+
+RUN cd /opt/ \
+ && wget -q  https://archive.apache.org/dist/tomcat/tomcat-connectors/jk/tomcat-connectors-${JK_VERSION}-src.tar.gz \
+ && wget -qO- https://archive.apache.org/dist/tomcat/tomcat-connectors/jk/tomcat-connectors-${JK_VERSION}-src.tar.gz.md5 | md5sum -c -
+
+RUN cd /opt/ && tar zxf tomcat-connectors-1.2.40-src.tar.gz
+RUN cd /opt/tomcat-connectors-${JK_VERSION}-src/native \
+  && ./configure --with-apxs=/usr/bin/apxs2 \
+  && make \
+  && mkdir -p /jk/modules \
+  && cp ./apache-2.0/mod_jk.so /jk/modules/mod_jk.so
+
+VOLUME [ "/jk/modules" ]
+
+CMD true

@@ -1,0 +1,10 @@
+httpd:
+  image: httpd
+  volumes:
+    - mod_jk-centos7.so:/usr/lib64/httpd/modules/mod_jk.so
+    - workers.properties:/etc/httpd/conf/workers.properties
+    - jk.conf:/etc/httpd/conf.d/jk.conf
+  external_links:
+    - status_tomcat_1:tomcat1
+  ports:
+    - 9080:80

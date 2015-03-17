@@ -1,0 +1,18 @@
+FROM centos:7
+
+RUN yum -y install httpd* gcc* wget tar make
+
+ENV JK_VERSION=1.2.40
+
+RUN cd /opt/ \
+ && wget -q  https://archive.apache.org/dist/tomcat/tomcat-connectors/jk/tomcat-connectors-${JK_VERSION}-src.tar.gz \
+ && wget -qO- https://archive.apache.org/dist/tomcat/tomcat-connectors/jk/tomcat-connectors-${JK_VERSION}-src.tar.gz.md5 | md5sum -c -
+
+RUN tar xzf tomcat-connectors-${JK_VERSION}-src.tar.gz \
+  && cd /opt/tomcat-connectors-1.2.40-src/native \
+  && ./configure --with-apxs=/usr/bin/apxs \
+  && make \
+  && mkdir -p /opt/lib64/httpd/modules \
+  && cp ./apache-2.0/mod_jk.so /opt/lib64/httpd/modules/
+
+VOLUME [ "/opt/lib64/httpd/modules" ]
