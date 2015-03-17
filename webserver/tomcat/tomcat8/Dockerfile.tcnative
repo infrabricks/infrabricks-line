@@ -1,0 +1,12 @@
+FROM infrabricks/tomcat:8
+
+MAINTAINER Peter Rossbach <peter.rossbach@bee42.com>
+
+ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib/x86_64-linux-gnu/
+
+RUN \
+  apt-get update \
+  && apt-get install -yq libtcnative-1 \
+  && apt-get clean autoclean \
+  && apt-get autoremove -y \
+  && rm -rf /var/lib/{apt,dpkg,cache,log}/
