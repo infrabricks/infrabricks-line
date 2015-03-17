@@ -1,0 +1,19 @@
+status:
+   build: .
+tomcat:
+  image: infrabricks/tomcat:8
+  ports:
+    - "8080"
+    - "8009"
+  volumes_from:
+    - status
+  volumes:
+    - tomcat-users.xml:/opt/tomcat/conf/tomcat-users.xml
+    - /var/run/docker.sock:/var/run/docker.sock
+  environment:
+    constraint: zone==dev
+    constraint: disk==ssd
+    SERVICE_8080_NAME: status-http
+    SERVICE_8009_NAME: status-ajp
+    SERVICE_TAGS: tomcat
+    SERVICE_REGION: bee42.1
