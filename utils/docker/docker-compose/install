@@ -1,0 +1,3 @@
+#!/bin/sh
+cp /scripts/docker-compose /data/docker-compose
+chmod +x /data/docker-compose
