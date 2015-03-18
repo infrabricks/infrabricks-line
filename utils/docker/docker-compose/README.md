@@ -16,7 +16,9 @@ from source or master:
 install the docker-compose script and image to your
 
 ```
-$ docker build -t infrabricks/docker-compose github.com/infrabricks/tools/docker-compose
+$ git clone https://github.com/infrabricks/infrabricks-line
+$ cd utils/docker/docker-compose
+$ docker build -t infrabricks/docker-compose .
 # or
 $ docker pull infrabricks/docker-compose
 # install the script
@@ -28,7 +30,10 @@ Move `docker-compose` to standard directory at your PATH.
 ### boot2docker
 
 ```
-$ docker build -t infrabricks/docker-compose github.com/infrabricks/tools/docker-compose
+$ git clone https://github.com/infrabricks/infrabricks-line
+$ cd utils/docker/docker-compose
+$ docker build -t infrabricks/docker-compose .
+# or
 # or
 $ docker pull infrabricks/docker-compose
 # install the script
