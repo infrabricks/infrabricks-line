@@ -1,0 +1,16 @@
+FROM ubuntu:14.10
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update \
+ && apt-get install -y wget
+
+ADD httpd-packages.sh /httpd-packages.sh
+RUN chmod +x /httpd-packages.sh
+VOLUME [ "/packages" ]
+CMD [ "/httpd-packages.sh" ]
+
+ADD LICENSE /etc/LICENSE.httpd-packages
+
+RUN COPYDATE=`date  +'%Y'` && echo "infrabricks httpd-packages" >/etc/provisioned.httpd-packages && date >>/etc/provisioned.httpd-packages && echo >>/etc/provisioned.httpd-packages && echo " Copyright ${COPYDATE} by <peter.rossbach@bee42.com> bee42 solutions gmbh" >>/etc/provisioned.httpd-packages
+
+MAINTAINER  Peter Rossbach <peter.rossbach@bee42.com> @PRossbach
