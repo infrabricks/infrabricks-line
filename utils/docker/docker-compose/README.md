@@ -1,8 +1,8 @@
-# docker-compose
+# Docker-Compose for boot2docker and windows
 
-Docker-compose is a very help full tool, but it isn't available for windows userand you can't directly install it on boot2docker. Bad.
+Docker-compose is a very helpfull tool, but it isn't available for windows user and you can't directly install it on boot2docker. Very Bad!
 
-This is a tiny docker tool wrapper from docker-compose:)
+This is a tiny docker tool wrapper from docker-compose :)
 
 ## install
 
@@ -11,6 +11,7 @@ This is a tiny docker tool wrapper from docker-compose:)
 At windows install the docker client
 from source or master:
 
+* https://ahmetalpbalkan.com/blog/compiling-docker-cli-on-windows/
 * https://master.dockerproject.com/windows/amd64/docker.exe
 
 install the docker-compose script and image to your
@@ -25,7 +26,7 @@ $ docker pull infrabricks/docker-compose
 $ docker run --rm -v $(pwd):/data --entrypoint=/scripts/install infrabricks/docker-compose
 ```
 
-Move `docker-compose` to standard directory at your PATH.
+Move `docker-compose` script to standard directory at your `PATH`.
 
 ### boot2docker
 
@@ -33,7 +34,6 @@ Move `docker-compose` to standard directory at your PATH.
 $ git clone https://github.com/infrabricks/infrabricks-line
 $ cd utils/docker/docker-compose
 $ docker build -t infrabricks/docker-compose .
-# or
 # or
 $ docker pull infrabricks/docker-compose
 # install the script
@@ -76,6 +76,43 @@ hello_1 |  http://docs.docker.com/userguide/
 hello_hello_1 exited with code 0
 Gracefully stopping... (press Ctrl+C again to force)
 ```
+
+## Use compose to provision other machines
+
+Access a external server with docker-compose set the
+DOCKER_X Variables
+
+```
+$ $(boot2docker shellinit)
+# or
+$ $(docker-machine env dev)
+$ docker run -v $PWD:/$(basename $PWD) -v $DOCKER_CERT_PATH:/certs -e DOCKER_CERT_PATH=/certs -e DOCKER_HOST=$DOCKER_HOST -e DOCKER_TLS_VERIFY=$DOCKER_TLS_VERIFY -ti --rm -w /$(basename $PWD) infrabricks/docker-compose --help
+```
+
+set an alias
+
+```
+
+$ _docker-compose() {
+  _PWD=$PWD
+  _BASENAME=$(basename $PWD)
+  docker run -v "$_PWD":"/$_BASENAME" \
+    -v $DOCKER_CERT_PATH:/certs \
+    -e DOCKER_CERT_PATH=/certs \
+    -e DOCKER_HOST=$DOCKER_HOST \
+    -e DOCKER_TLS_VERIFY=$DOCKER_TLS_VERIFY \
+    -ti --rm  -w "$_BASENAME" \
+    infrabricks/docker-compose $@
+}
+$ alias docker-compose="_docker_compose $@"
+```
+
+## Links
+
+* https://github.com/docker/compose
+* https://docs.docker.com/compose/
+* Use old fig inside a docker container
+  * https://github.com/ianblenke/docker-fig-docker
 
 Regards
 Peter
