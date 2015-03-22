@@ -2,7 +2,7 @@ require "spec_helper"
 require 'serverspec'
 
 set :backend, :docker
-describe "dockerfile built ex-status image" do
+describe "dockerfile built ex-status image with docker_image" do
 
   describe docker_image('infrabricks/ex-status:latest') do
     it { should exist }
