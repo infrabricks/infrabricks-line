@@ -21,7 +21,7 @@
 	<img id="logo" src="logo.png" />
 	<h1>Docker Tomcat Status page</h1>
 	  <b>Hostname :</b> <%= java.net.InetAddress.getLocalHost().getHostName() %><br />
-		<b>Tomcat Version :</b> <%= application.getServerInfo() %> peter<br/>
+		<b>Tomcat Version :</b> <%= application.getServerInfo() %><br/>
 		<b>Servlet Specification Version :</b> <%= application.getMajorVersion() %>.<%= application.getMinorVersion() %><br />
 		<b>JSP version :</b> <%=JspFactory.getDefaultFactory().getEngineInfo().getSpecificationVersion() %><br />
 		<b>Now :</b> <%= dateFormat.format(new java.util.Date()) %><br />
