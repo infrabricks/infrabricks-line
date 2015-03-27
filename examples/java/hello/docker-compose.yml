@@ -1,0 +1,6 @@
+hello:
+  image: infrabricks/tomcat:8
+  ports:
+   - "8080"
+  volumes:
+   - target/hello-0.1.0:/opt/tomcat/webapps/hello
