@@ -113,7 +113,7 @@
           <!-- Needs to be repeated here (the following two lines strangely doesn't work when the next line is omitted although)
               Maven, you little sneaky beast ... -->
           <hello.port>${hello.port}</hello.port>
-          <tomcat.version>${tomcat.version}</tomcat.version>
+          <tomcat.version>Apache Tomcat/${tomcat.version}</tomcat.version>
           <!-- Map maven variables to system properties which in turn can be used in the test classes -->
           <hello.url>http://${hello.host}:${hello.port}/${project.name}</hello.url>
         </systemPropertyVariables>

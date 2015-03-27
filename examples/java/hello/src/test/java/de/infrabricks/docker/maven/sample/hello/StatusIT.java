@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
  * @author Peter Rosbach
  * @since 27.03.15
  */
-public class StatusTest {
+public class StatusIT {
 
     @Test
     public void testVersion() {
@@ -28,7 +28,7 @@ public class StatusTest {
         // Need to do it that way since Jolokia doesnt return application/json as mimetype by default
         JsonPath json = with(get("/status.jsp").asString());
         json.prettyPrint();
-        assertEquals(versionExpected, json.get("Tomcat Version"));
+        assertEquals(versionExpected, json.get("TomcatVersion"));
 
         // Alternatively, set the mime type before, then Rest-assured's fluent API can be used
         given()
@@ -36,10 +36,10 @@ public class StatusTest {
                 .get("/status.jsp")
         .then().assertThat()
                 .header("content-type", containsString("application/json"))
-                .body("Tomcat Version", equalTo(versionExpected))
-                .body("timestamp", lessThanOrEqualTo((int) (System.currentTimeMillis() / 1000)))
-                .body("status", equalTo(200))
-                .body("Now",notNullValue())
+                .statusCode(200)
+                .body("TomcatVersion", equalTo(versionExpected))
+                .body("Timestamp", lessThanOrEqualTo((int) (System.currentTimeMillis() / 1000)))
+                .body("Date",notNullValue())
                 .body("Hostname",notNullValue());
 
     }
