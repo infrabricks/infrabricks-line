@@ -1,0 +1,28 @@
+validator:
+  image: infrabricks/validator
+mysql:
+  image: mysql:5.6
+  volumes:
+    - mysql/etc/mysql:/etc/mysql
+  environment:
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_USER: account
+    MYSQL_PASSWORD: account
+    MYSQL_DATABASE: bank
+account:
+  build: .
+  ports:
+    - "8093:8080"
+  links:
+    - validator
+    - mysql
+  environment:
+    constraint: zone==dev
+    constraint: affinity:container==account_validator_1
+    constraint: affinity:container==account_mysql_1
+    SERVICE_8080_NAME: hysterix_account
+    SERVICE_TAGS: tomcat hysterix account
+    SERVICE_REGION: bee42.1
+    SWAGGER_URL: http://192.168.59.103:8093/api
+    MYSQL_USER: account
+    MYSQL_PASSWORD: account

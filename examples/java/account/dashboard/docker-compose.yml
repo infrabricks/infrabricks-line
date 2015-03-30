@@ -1,0 +1,15 @@
+dashboard:
+   build: .
+tomcat:
+  image: infrabricks/tomcat:8
+  ports:
+    - "8080"
+  volumes_from:
+    - dashboard
+  volumes:
+    - tomcat-users.xml:/opt/tomcat/conf/tomcat-users.xml
+  environment:
+    constraint: zone==dev
+    SERVICE_8080_NAME: hysterix_dashboard_http
+    SERVICE_TAGS: tomcat hysterix dashboard
+    SERVICE_REGION: bee42.1
