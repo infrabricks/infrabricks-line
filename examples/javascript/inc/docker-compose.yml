@@ -1,0 +1,23 @@
+nginx:
+    build: ./nginx
+    links:
+        - app:node1
+    ports:
+        - "80"
+    volumes:
+      - export/etc/nginx/conf.d:/etc/nginx/conf.d
+app:
+    build: ./app
+    links:
+        - redis
+    ports:
+        - "8080"
+    environment:
+      constraint: zone==dev
+      SERVICE_8080_NAME: node-app
+      SERVICE_TAGS: node
+      SERVICE_REGION: bee42.1
+redis:
+    build: ./redis
+    ports:
+        - "6379"

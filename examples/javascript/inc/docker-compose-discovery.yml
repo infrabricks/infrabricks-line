@@ -1,0 +1,34 @@
+consul:
+  image: progrium/consul
+  environment:
+    - GOMAXPROCS=2
+  command: -server -advertise 192.168.59.103 -ui-dir=/ui -data-dir=/data -bootstrap
+  hostname: consul
+  ports:
+    - "8400:8400"
+    - "8500:8500"
+    - "8600:53/udp"
+#  volumes:
+#    - /var/run/docker.sock:/var/run/docker.sock
+#    - data/consul:/data
+
+# For external interface `boot2docker ip`
+registrator:
+  image: gliderlabs/registrator:latest
+  hostname: registrator
+  links:
+    - consul:consul
+  volumes:
+    - /var/run/docker.sock:/tmp/docker.sock
+  command: -ip 192.168.59.103 consul://consul:8500/services
+
+template:
+  build: consul-template
+  links:
+    - consul:consul
+  environment:
+    - NGINX_CID=inc_nginx_1
+  volumes:
+    - /usr/local/bin/docker:/usr/local/bin/docker
+    - /var/run/docker.sock:/var/run/docker.sock
+    - export:/app/export
