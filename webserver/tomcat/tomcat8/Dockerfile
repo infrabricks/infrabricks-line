@@ -14,9 +14,9 @@ ENV TOMCAT_MAJOR_VERSION=8 \
  DEPLOY_DIR=/webapps \
  LIBS_DIR=/libs \
  PATH=$PATH:$CATALINA_HOME/bin \
- DEBIAN_FRONTEND=noninteractive
 
-RUN \
+
+RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update \
   && apt-get install -yq pwgen \
   && apt-get clean autoclean \
