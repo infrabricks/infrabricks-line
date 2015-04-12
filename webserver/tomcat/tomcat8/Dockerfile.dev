@@ -1,6 +1,6 @@
-FROM java:8-jre
+FROM java:8-jdk
 
-MAINTAINER Peter Rossbach <peter.rossbach@bee42.com> @PRossbach
+MAINTAINER Peter Rossbach <peter.rossbach@bee42.com>
 
 ENV TOMCAT_MAJOR_VERSION=8 \
  TOMCAT_MINOR_VERSION=8.0.21 \
@@ -13,12 +13,11 @@ ENV TOMCAT_MAJOR_VERSION=8 \
  TOMCAT_AJPTIMEOUT=410000 \
  DEPLOY_DIR=/webapps \
  LIBS_DIR=/libs \
- PATH=$PATH:$CATALINA_HOME/bin \
- TOMCAT_ACCESSLOG_PATTERN="%{begin:yyyy-MM-dd'T'HH:mm:ss:SSSZ}t org.apache.catalina.valves.AccessLogValve access INFO: %h \"%r\" \"%{Referer}i\" \"%{User-Agent}i\" %s %b \"%I\" %D %S"
+ PATH=$PATH:$CATALINA_HOME/bin
 
 RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update \
-  && apt-get install -yq pwgen jq \
+  && apt-get install -yq pwgen jq vim \
   && apt-get clean autoclean \
   && apt-get autoremove -y \
   && rm -rf /var/lib/{apt,dpkg,cache,log}
@@ -42,18 +41,14 @@ RUN gpg --keyserver pool.sks-keyservers.net --recv-keys \
 	F7DA48BB64BCB84ECBA7EE6935CD23C10D498E23 \
   && gpg --keyserver pgpkeys.mit.edu --recv-key EF101165
 
-
-RUN  TOMCAT_TGZ_URL=https://archive.apache.org/dist/tomcat/tomcat-${TOMCAT_MAJOR_VERSION}/v${TOMCAT_MINOR_VERSION}/bin/apache-tomcat-${TOMCAT_MINOR_VERSION}.tar.gz &&  \
+RUN TOMCAT_TGZ_URL=https://archive.apache.org/dist/tomcat/tomcat-${TOMCAT_MAJOR_VERSION}/v${TOMCAT_MINOR_VERSION}/bin/apache-tomcat-${TOMCAT_MINOR_VERSION}.tar.gz &&  \
  echo $TOMCAT_TGZ_URL && curl -SL "$TOMCAT_TGZ_URL" -o tomcat.tar.gz \
 	&& curl -SL "$TOMCAT_TGZ_URL.asc" -o tomcat.tar.gz.asc \
 	&& gpg --verify tomcat.tar.gz.asc \
 	&& tar -xvf tomcat.tar.gz --strip-components=1 \
 	&& rm tomcat.tar.gz* \
-  && rm -rf ${CATALINA_HOME}/webapps/* \
-  ${CATALINA_HOME}/RELEASE-NOTES \
-  ${CATALINA_HOME}/RUNNING.txt \
-  ${CATALINA_HOME}/bin/*.bat \
-  ${CATALINA_HOME}/bin/*.tar.gz \
+    ${CATALINA_HOME}/bin/*.bat \
+    ${CATALINA_HOME}/bin/*.tar.gz \
   && mkdir -p ${CATALINA_HOME}/work ${CATALINA_HOME}/temp
 
 RUN curl -SL "http://labs.consol.de/maven/repository/org/jolokia/jolokia-war/${JOLOKIA_VERSION}/jolokia-war-${JOLOKIA_VERSION}.war" -o ${CATALINA_HOME}/webapps/jolokia.war \
@@ -64,12 +59,11 @@ RUN curl -SL "http://labs.consol.de/maven/repository/org/jolokia/jolokia-war/${J
   && unzip ../jolokia.war \
   && rm ${CATALINA_HOME}/webapps/jolokia.war*
 
-ADD conf/server.xml ${CATALINA_HOME}/conf/server.xml
+ADD conf/server-dev.xml ${CATALINA_HOME}/conf/server.xml
 ADD conf/logging.properties ${CATALINA_HOME}/conf/logging.properties
 ADD bin/* ${CATALINA_HOME}/bin/
 RUN chmod +x ${CATALINA_HOME}/bin/*.sh
-ADD lib/tomcat-extensions.jar ${CATALINA_HOME}/lib/tomcat-extensions.jar
-ADD lib/jolokia-access.xml ${CATALINA_HOME}/lib/jolokia-access.xml
+ADD lib/* ${CATALINA_HOME}/lib/
 
 EXPOSE 8080
 EXPOSE 8009

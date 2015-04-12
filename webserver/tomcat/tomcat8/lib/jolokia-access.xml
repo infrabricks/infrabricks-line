@@ -7,12 +7,14 @@
   </remote>
 
   <http>
+    <method>get</method>
     <method>post</method>
   </http>
 
   <commands>
     <command>read</command>
     <command>list</command>
+    <command>version</command>
   </commands>
 
   <allow>
@@ -25,6 +27,10 @@
   <allow>
     <mbean>
       <name>Catalina:*</name>
+      <attribute>properties</attribute>
+    </mbean>
+    <mbean>
+      <name>java.lang:*</name>
       <attribute>properties</attribute>
     </mbean>
   </allow>

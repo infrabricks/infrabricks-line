@@ -1,16 +1,17 @@
 # Flexible Docker Apache Tomcat 8 container
 
-![](images/tomcat-logo.png)
+![logo](logo.png)
 
-* Based on official java 8
-* Install Apache Tomcat 8 basic distribution
-* Add jolokia to the distribution
-* Tuned server.xml and logging.properties
+* Based on official trustet docker inc openjdk java jre-8
+* Install Apache Tomcat 8 Basic distribution
+* Add jolokia jmx rest api to the distribution
+* Tuned server.xml and logging.properties for production
 * Access Log to stdout
-* Samples and Tricks
-  * Composition
-  * JDK and Tomcat Volume
-  * Overwrite or extend Tomcat configs, webapps or libs
+* Drop all webapps and unused files
+* Show some docker tricks
+  * My webapp and tomcat docker composition pattern
+  * JDK and Tomcat as docker data volume
+  * Easy overwrite or extend Tomcat configs, webapps or libs
 
 ![](images/infrabricks-tomcat8.png)
 
@@ -38,7 +39,7 @@ Tomcat is small but Java with debian consume more then >520mb
 Information about the installed tomcat version:
 
 ```bash
-$ docker run --rm --entrypoint=/opt/tomcat/bin/version.sh infrabricks/tomcat:8
+$ docker run --rm --entrypoint=/opt/tomcat/bin/version.sh infrabricks/tomcat:8-dev
 Server version: Apache Tomcat/8.0.20
 Server built:   Feb 15 2015 18:10:42 UTC
 Server number:  8.0.20.0
@@ -49,7 +50,7 @@ JVM Version:    1.8.0_40-internal-b22
 JVM Vendor:     Oracle Corporation
 ```
 
-### Start a tomcat with example app
+### Start a tomcat with simple webapp
 
 ```bash
 $ mkdir -p webapps/status
@@ -241,10 +242,96 @@ RUN \
 * [Tomcat tcnative documentation](http://tomcat.apache.org/native-doc/)
 * Build newest tcnative version ../tomcat8-tcnative
 
-### mod_jk integration
+### Use Jolokia
 
-**TODO**
+$ docker exec -ti tomcat8_tomcat_1 /bin/bash
+> curl 127.0.0.1:8080/jolokia/version | jq "."
+{
+  "request": {
+    "type": "version"
+  },
+  "value": {
+    "agent": "1.2.3",
+    "protocol": "7.2",
+    "config": {
+      "maxCollectionSize": "1000",
+      "agentId": "172.17.0.181-1-4697411f-servlet",
+      "debug": "false",
+      "agentType": "servlet",
+      "serializeException": "false",
+      "detectorOptions": "{}",
+      "dispatcherClasses": "org.jolokia.jsr160.Jsr160RequestDispatcher",
+      "maxDepth": "15",
+      "discoveryEnabled": "false",
+      "canonicalNaming": "true",
+      "historyMaxEntries": "10",
+      "includeStackTrace": "true",
+      "maxObjects": "0",
+      "debugMaxEntries": "100"
+    },
+    "info": {
+      "product": "tomcat",
+      "vendor": "Apache",
+      "version": "8.0.21"
+    }
+  },
+  "timestamp": 1428822431,
+  "status": 200
+}
+> curl -Ls 127.0.0.1:8080/jolokia/read/java.lang:type=Memory | jq "."
+{
+  "request": {
+    "mbean": "java.lang:type=Memory",
+    "type": "read"
+  },
+  "value": {
+    "ObjectPendingFinalizationCount": 0,
+    "Verbose": false,
+    "HeapMemoryUsage": {
+      "init": 33554432,
+      "committed": 77594624,
+      "max": 477626368,
+      "used": 41087240
+    },
+    "NonHeapMemoryUsage": {
+      "init": 2555904,
+      "committed": 34865152,
+      "max": -1,
+      "used": 33903744
+    },
+    "ObjectName": {
+      "objectName": "java.lang:type=Memory"
+    }
+  },
+  "timestamp": 1428822529,
+  "status": 200
+}
+```
 
+* [Jolokia Reference Manual](https://jolokia.org/reference/html/index.html)
+* Review the restrictions at `lib/jolokia-access.xml`
+
+### Change version
+
+Set TOMCAT_VERSION at this files:
+
+* build.sh
+* Dockerfile
+
+**WARNING**: Check gpg keys from authors site if you change the version!
+
+jolokia
+
+```
+gpg --verify jolokia.war.asc
+gpg --keyserver pgpkeys.mit.edu --recv-key EF101165
+#Roland Huss <roland@jolokia.org>
+```
+
+Apache Tomcat
+
+* https://www.apache.org/info/verification.html
+* Tomcat Keys file http://svn.apache.org/repos/asf/tomcat/trunk/KEYS
 
 ## User Feedback
 
@@ -271,7 +358,7 @@ You are invited to contribute new features, fixes, or updates, large or small; w
 
 Before you start to code, we recommend discussing your plans through a GitHub issue, especially for more ambitious contributions. This gives other contributors a chance to point you in the right direction, give you feedback on your design, and help you find out if someone else is working on the same thing.
 
-## Links
+## References
 
 * [Apache Tomcat](https://tomcat.apache.org)
 * [Docker](https://docker.com)
@@ -280,5 +367,12 @@ Before you start to code, we recommend discussing your plans through a GitHub is
 * [jolokia](http://www.jolokia.org/)
 * [Docker maven plugin](https://github.com/rhuss/docker-maven-plugin)
 
-Regards
-Peter
+## Possible Add ons
+
+* load balancing
+* mod_jk integration
+* tcnative support
+  * compile from source
+* memcache
+* tomcat ha cluster
+* add a developer version (JDK all examples)

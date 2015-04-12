@@ -77,6 +77,7 @@ export CATALINA_OPTS="$CATALINA_OPTS \
  -Dtomcat.minSpareThreads=${TOMCAT_MINSPARETHREADS} \
  -Dtomcat.httpTimeout=${TOMCAT_HTTPTIMEOUT} \
  -Dtomcat.ajpTimeout=${TOMCAT_AJPTIMEOUT} \
+ -Dtomcat.accessLogPattern='${TOMCAT_ACCESSLOG_PATTERN}' \
  -Djava.security.egd=file:/dev/./urandom \
  -Dsun.net.client.defaultReadTimeout=180000 \
  -Dsun.net.client.defaultConnectTimeout=180000 \
@@ -97,4 +98,7 @@ else
   -Dcom.sun.management.jmxremote.authenticate=false"
 fi
 
+cat ${CATALINA_HOME}/bin/infrabricks.txt
+echo "     Power by Apache Tomcat"
+echo "   https://tomcat.apache.org"
 exec ${CATALINA_HOME}/bin/catalina.sh run

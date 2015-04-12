@@ -2,7 +2,7 @@
 IMAGE=tomcat
 ACCOUNT=infrabricks
 TAG_SHORT=8
-TAG_LONG=8.0.20
+TAG_LONG=8.0.21
 docker build -t="${ACCOUNT}/$IMAGE" .
 DATE=`date +'%Y%m%d%H%M'`
 IID=$(docker inspect -f "{{.Id}}" ${ACCOUNT}/$IMAGE)

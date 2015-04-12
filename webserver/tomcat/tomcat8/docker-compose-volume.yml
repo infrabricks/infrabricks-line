@@ -1,0 +1,24 @@
+tomcatvolume:
+  image: infrabricks/tomcat:8-volume
+tomcat:
+  image: java:8-jdk
+  ports:
+    - "8080"
+    - "8009"
+  env_file: tomcat.envfile
+  volumes_from:
+    - tomcatvolume
+  volumes:
+    - webapps/status:/webapps/status
+    - /var/run/docker.sock:/var/run/docker.sock
+    - /usr/local/bin/docker:/usr/local/bin/docker
+  environment:
+    CATALINA_HOME: /opt/tomcat
+    constraint: zone==dev
+    constraint: disk==ssd
+    SERVICE_8080_NAME: status-http
+    SERVICE_8009_NAME: status-ajp
+    SERVICE_TAGS: tomcat
+    SERVICE_REGION: bee42.1
+  working_dir: /opt/tomcat
+  command: /opt/tomcat/bin/tomcat.sh

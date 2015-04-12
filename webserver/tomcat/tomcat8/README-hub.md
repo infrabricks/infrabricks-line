@@ -2,15 +2,16 @@
 
 ![logo.png](https://raw.githubusercontent.com/infrabricks/infrabricks-line/master/webserver/tomcat/tomcat8/logo.png)
 
-* Based on official java 8
-* Install Apache Tomcat 8 basic distribution
-* Add jolokia to the distribution
-* Tuned server.xml and logging.properties
+* Based on official trustet docker inc openjdk java jre-8
+* Install Apache Tomcat 8 Basic distribution
+* Add jolokia jmx rest api to the distribution
+* Tuned server.xml and logging.properties for production
 * Access Log to stdout
-* Samples and Tricks
-  * Composition
-  * JDK and Tomcat Volume
-  * Overwrite or extend Tomcat configs, webapps or libs
+* Drop all webapps and unused files
+* Show some docker tricks
+  * My webapp and tomcat docker composition pattern
+  * JDK and Tomcat as docker data volume
+  * Easy overwrite or extend Tomcat configs, webapps or libs
 
 ![Tomcat Layer](https://raw.githubusercontent.com/infrabricks/infrabricks-line/master/webserver/tomcat/tomcat8/images/infrabricks-tomcat8.png)
 
