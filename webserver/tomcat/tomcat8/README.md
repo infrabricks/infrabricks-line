@@ -364,6 +364,11 @@ You are invited to contribute new features, fixes, or updates, large or small; w
 
 Before you start to code, we recommend discussing your plans through a GitHub issue, especially for more ambitious contributions. This gives other contributors a chance to point you in the right direction, give you feedback on your design, and help you find out if someone else is working on the same thing.
 
+## Power by Apache Tomcat
+
+![Power by Apache Tomcat ](images/tomcat-power.gif)
+
+
 ## References
 
 * [Apache Tomcat](https://tomcat.apache.org)
