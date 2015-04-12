@@ -74,8 +74,6 @@ ADD lib/jolokia-access.xml ${CATALINA_HOME}/lib/jolokia-access.xml
 EXPOSE 8080
 EXPOSE 8009
 
-WORKDIR "/opt/tomcat"
-
 ADD LICENSE /etc/LICENSE.tomcat8
 RUN COPYDATE=`date  +'%Y'` \
  && echo "infrabricks tomcat8" >/etc/provisioned.tomcat8 \

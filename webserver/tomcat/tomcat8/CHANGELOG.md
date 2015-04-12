@@ -5,7 +5,8 @@
 ### Tomcat
 * Update Tomcat 8.0.21
 + Dockerfile.dev - 8-JDK with webapps and autoload
-+ conf/server-dev.xml
++ Dockerfile.tcnative-build - 8-JDK (experiment)
++ conf/server-dev.xml - autoload
 + docker-compose-volume.yml - refactor volume example
 * Remove manager webapp
 * docker-compose.yml - Now start a production ready Tomcat
@@ -15,6 +16,7 @@
 * refactor jolokia restrictions
 * Check with tomcat and jolokia downloads with gpg
 + bin/infrabricks.txt - show asciiart at Tomcat start
++ build-all.sh
 
 ## 0.1.0 (2015-04-09)
 

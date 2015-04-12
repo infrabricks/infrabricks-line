@@ -1,0 +1,27 @@
+FROM infrabricks/tomcat:8-dev
+
+MAINTAINER Peter Rossbach <peter.rossbach@bee42.com>
+
+ENV TC_NATIVE=1.1.33
+
+RUN  apt-get update \
+  && apt-get install -y libapr1-dev libssl-dev gcc tar make
+
+RUN cd /opt/ \
+  && wget -q  http://archive.apache.org/dist/tomcat/tomcat-connectors/native/${TC_NATIVE}/source/tomcat-native-${TC_NATIVE}-src.tar.gz \
+  && wget -qO- http://archive.apache.org/dist/tomcat/tomcat-connectors/native/${TC_NATIVE}/source/tomcat-native-${TC_NATIVE}-src.tar.gz.md5 | md5sum -c - \
+  && tar xzf tomcat-native-${TC_NATIVE}-src.tar.gz
+
+RUN cd /opt/tomcat-native-${TC_NATIVE}-src/jni/native \
+  && ./configure --with-apr=/usr/bin/apr-1-config \
+            --with-java-home=/usr/lib/jvm/java-8-openjdk-amd64 \
+            --with-ssl=yes \
+            --prefix=$CATALINA_HOME \
+  && make && make install \
+  && apt-get clean autoclean \
+  && apt-get autoremove -y \
+  && rm -rf /var/lib/{apt,dpkg,cache,log}/ \
+  && rm -rf ${CATALINA_HOME}/webapps/*
+
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CATALINA_HOME/lib
+ADD conf/server-apr.xml ${CATALINA_HOME}/conf/server.xml

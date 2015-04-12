@@ -24,15 +24,20 @@ Another minimal tomcat docker container example can you found at my github proje
 Create the images with `./build.sh`
 
     $ ./build.sh
-    $ docker images | grep "infrabricks/tomcat:8"
-    infrabricks/tomcat                     8-volume            99ec7170251a        28 minutes ago      13.39 MB
-    infrabricks/tomcat                     8-tcnative          88b2ea0ced5c        3 hours ago         538.1 MB
-    infrabricks/tomcat                     8.0.20              4b37f6bc7608        4 hours ago         527.2 MB
-    infrabricks/tomcat                     8                   4b37f6bc7608        4 hours ago         527.2 MB
-    infrabricks/tomcat                     latest              4b37f6bc7608        4 hours ago         527.2 MB
-    infrabricks/tomcat                     201503171355        4b37f6bc7608        4 hours ago         527.2 MB
+    $ docker images | grep infrabricks/tomcat
+    infrabricks/tomcat                       8.0.21-dev          ad95cff93f75        9 minutes ago       868 MB
+    infrabricks/tomcat                       8-dev               ad95cff93f75        9 minutes ago       868 MB
+    infrabricks/tomcat                       8-volume            ce5c040a573f        15 minutes ago      13.35 MB
+    infrabricks/tomcat                       8.0.21-volume       ce5c040a573f        15 minutes ago      13.35 MB
+    infrabricks/tomcat                       201504120951        119751fe6d65        17 minutes ago      497.6 MB
+    infrabricks/tomcat                       8.0.21              119751fe6d65        17 minutes ago      497.6 MB
+    infrabricks/tomcat                       201504120955        119751fe6d65        17 minutes ago      497.6 MB
+    infrabricks/tomcat                       8                   119751fe6d65        17 minutes ago      497.6 MB
+    infrabricks/tomcat                       201504120947        119751fe6d65        17 minutes ago      497.6 MB
+    infrabricks/tomcat                       latest              119751fe6d65        17 minutes ago      497.6 MB
+    infrabricks/tomcat                       8.0.20              4b37f6bc7608        3 weeks ago         527.2 MB
 
-Tomcat is small but Java with debian consume more then >520mb
+Tomcat is small but Java with debian consume more then >497mb
 
 ## Use the images
 
@@ -40,13 +45,13 @@ Information about the installed tomcat version:
 
 ```bash
 $ docker run --rm --entrypoint=/opt/tomcat/bin/version.sh infrabricks/tomcat:8-dev
-Server version: Apache Tomcat/8.0.20
-Server built:   Feb 15 2015 18:10:42 UTC
-Server number:  8.0.20.0
+Server version: Apache Tomcat/8.0.21
+Server built:   Mar 23 2015 14:11:21 UTC
+Server number:  8.0.21.0
 OS Name:        Linux
 OS Version:     3.18.5-tinycore64
 Architecture:   amd64
-JVM Version:    1.8.0_40-internal-b22
+JVM Version:    1.8.0_40-internal-b27
 JVM Vendor:     Oracle Corporation
 ```
 
@@ -193,6 +198,7 @@ tomcat:
   volumes:
     - webapps/status:/webapps/status
     - /var/run/docker.sock:/var/run/docker.sock
+    - /usr/local/bin/docker:/usr/local/bin/docker
   environment:
     CATALINA_HOME: /opt/tomcat
     constraint: zone==dev
@@ -213,16 +219,16 @@ docker build -t infrabricks/tomcat:8-volume -f Dockerfile.volume .
 docker-compose up -d
 ```
 
-* Overwriting configs currently not supported.
+* Overwriting configs is supported.
   * Container volumes can't overlay
-  * FIX: copy it inside tomcat.sh
 * Don't use same tomcat volume data container at multiple tomcat containers.
+* use Docker binary to detect the container name (auto setting JVM_ROUTE with consul)
 
 ### Install tcnative at debian
 
 see Dockerfile.tcnative
 
-**Warning**: This is only a 1.3.32 very old version
+**Warning**: This is only a 1.3.32 old version
 
 ```
 FROM infrabricks/tomcat:8
