@@ -15,6 +15,8 @@
 
 ![Tomcat Layer](https://raw.githubusercontent.com/infrabricks/infrabricks-line/master/webserver/tomcat/tomcat8/images/infrabricks-tomcat8.png)
 
+![Tomcat Layer](https://raw.githubusercontent.com/infrabricks/infrabricks-line/master/webserver/tomcat/tomcat8/images/infrabricks-tomcat8-volume.png)
+
 [More Info](https://github.com/infrabricks/infrabricks-line/tree/master/webserver/tomcat/tomcat8)
 
 This implements some ideas from my german [tomcat blog post](http://www.infrabricks.de/blog/2014/12/19/docker-microservice-basis-mit-apache-tomcat-implementieren/).
@@ -59,6 +61,10 @@ limitations under the License.
 You are invited to contribute new features, fixes, or updates, large or small; we are always thrilled to receive pull requests, and do our best to process them as fast as we can.
 
 Before you start to code, we recommend discussing your plans through a GitHub issue, especially for more ambitious contributions. This gives other contributors a chance to point you in the right direction, give you feedback on your design, and help you find out if someone else is working on the same thing.
+
+## Power by Apache Tomcat
+
+![Power by Apache Tomcat ](https://raw.githubusercontent.com/infrabricks/infrabricks-line/master/webserver/tomcat/tomcat8/images/tomcat-power.gif)
 
 ## References
 
