@@ -1,0 +1,4 @@
+hello:
+  image: infrabricks/hello
+  ports:
+   - "8080"
